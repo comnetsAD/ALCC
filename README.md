@@ -56,14 +56,13 @@ The ALCC kernel module requires kernel version 4.19.0.
 Make sure you upgrade/downgrade to kernel version 4.19.0 before proceeding. 
 
 
-##### Step 1:
-###### Set default TCP congestion control protocol
+#### Set default TCP congestion control protocol
 Before starting any experiments, make sure the default system TCP congestion control protocol is set as desired. For example; for cubic, do the following
 
 ```sh
 $ sudo sysctl -w net.ipv4.tcp_congestion_control=cubic
 ```
-###### Install ALCC Kernel Module
+#### Install ALCC Kernel Module
 ```sh
 $ cd libalcc/netfilter
 $ make clean
@@ -71,7 +70,7 @@ $ make
 $ sudo insmod alcc_kernel.ko 
 ```
 
-###### Generating Figure 4,5, and 6 (Verus vs. ALCC verus)
+#### Generating Figure 4,5, and 6 (Verus vs. ALCC verus)
 
 Before running the bftpd server, make sure you make changes to the following files.
 
@@ -161,7 +160,7 @@ $ python plotverus.py rapidGold 20 300
 
 You can view the results inside the figures folder
 
-###### Generating Figure 8,9, and 10 (Copa vs. ALCC Copa)
+#### Generating Figure 8,9, and 10 (Copa vs. ALCC Copa)
 
 Assuming that you have properly configured the bftpd application from the setup before. 
 Now we need to compile it for ALCC Copa. Go to Applications/bftpd and do the following:
