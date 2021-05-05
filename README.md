@@ -32,7 +32,7 @@ $ sudo apt-get install g++ makepp libboost-dev libprotobuf-dev protobuf-compiler
 $ sudo apt-get install build-essential autoconf libasio-dev libalglib-dev libboost-system-dev
 ````
 
-###### Compile native verus and native copa
+#### Compile native verus and native copa
 
 For Verus and Copa, we have cloned and modified slightly the native versions of these protocols to be able to compare. You just need to compile them. You can find the native repos inside the applications folder
 
