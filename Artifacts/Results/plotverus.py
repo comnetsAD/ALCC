@@ -255,8 +255,8 @@ for trace in [sys.argv[1]]:
 			for algo in ["verus","alccVerus"]:
 				print algo
 
-				#if algo=="alccVerus":
-				#	os.system("tshark -r ./{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./{0}/{1}{2}/throughput.csv".format(algo,trace,i))
+				if algo=="alccVerus":
+					os.system("tshark -r ./{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./{0}/{1}{2}/throughput.csv".format(algo,trace,i))
 				
 				print "./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out"
 				delays, delayTimes = parse_delay("./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out")
@@ -325,7 +325,7 @@ for trace in [sys.argv[1]]:
 	ax1.grid()
 	ax2.grid()
 	#plt.show()
-	plt.savefig("./figures/pdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
+	plt.savefig("./figures/verus_pdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
 	plt.close()
 
 	#fig, (ax1, ax2) = plt.subplots(2) 
@@ -357,7 +357,7 @@ for trace in [sys.argv[1]]:
 	ax1.grid()
 	ax2.grid()
 	#plt.show()
-	plt.savefig("./figures/cdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
+	plt.savefig("./figures/verus_cdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
 	plt.close()
 
 	def simple_cdf(data):
@@ -446,7 +446,7 @@ for trace in [sys.argv[1]]:
 	# else:
 	#     plt.ylim([0,20])
 
-	plt.savefig("./figures/overall_"+trace+'.png',bbox_inches='tight')
+	plt.savefig("./figures/verus_overall_"+trace+'.png',bbox_inches='tight')
 	plt.close()
 	#plt.xscale("linear", nonposx='clip')
 	#plt.savefig(sys.argv[1]+'_overall2.pdf',bbox_inches='tight')
@@ -454,46 +454,46 @@ for trace in [sys.argv[1]]:
 
 
 
-	labels = ["alccVerus","verus"]
-	markers = ['x','s','+','o','.']
-	colors=['r','b']
+# 	labels = ["alccVerus","verus"]
+# 	markers = ['x','s','+','o','.']
+# 	colors=['r','b']
 
-	#fig, (ax) = plt.subplots(1) 
-	fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
+# 	#fig, (ax) = plt.subplots(1) 
+# 	fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
 
-	m = 0
-	n = 0
+# 	m = 0
+# 	n = 0
 
-	for i in range(len(labels)):
-		for j in range(NUM_RUNS):
+# 	for i in range(len(labels)):
+# 		for j in range(NUM_RUNS):
 
-			a = simple_cdf(totalDelay2[labels[i]][j])[1]
-			b = simple_cdf(totalThroughput2[labels[i]][j])[1]
+# 			a = simple_cdf(totalDelay2[labels[i]][j])[1]
+# 			b = simple_cdf(totalThroughput2[labels[i]][j])[1]
 
-			print a, b
+# 			print a, b
 
-			if a > m:
-				m = a
-			if b > n:
-				n = b
+# 			if a > m:
+# 				m = a
+# 			if b > n:
+# 				n = b
 
-			if j == 0:
-				plt.plot(a,b,marker=markers[0],mew=2,color=colors[i], label=labels[i])
-			else:
-				plt.plot(a,b,marker=markers[0],mew=2,color=colors[i])
+# 			if j == 0:
+# 				plt.plot(a,b,marker=markers[0],mew=2,color=colors[i], label=labels[i])
+# 			else:
+# 				plt.plot(a,b,marker=markers[0],mew=2,color=colors[i])
 
-	plt.legend(loc='upper left')
-	plt.grid()  
+# 	plt.legend(loc='upper left')
+# 	plt.grid()  
 
-	plt.ylabel("Throughput (Mbps)")
-	plt.xlabel("Delay (s)")
+# 	plt.ylabel("Throughput (Mbps)")
+# 	plt.xlabel("Delay (s)")
 
-	plt.xlim([0,m*1.2])
-	plt.ylim([0,n*1.2])
-#	try:
-#		plt.xlim([0, 1.2*max(overallDelay[0][2],overallDelay[1][2])])
-#		plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
-#	except:
-#		pass
-	plt.savefig("./figures/overall2_"+trace+'.png',bbox_inches='tight')
-	plt.close()
+# 	plt.xlim([0,m*1.2])
+# 	plt.ylim([0,n*1.2])
+# #	try:
+# #		plt.xlim([0, 1.2*max(overallDelay[0][2],overallDelay[1][2])])
+# #		plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
+# #	except:
+# #		pass
+# 	plt.savefig("./figures/overall2_"+trace+'.png',bbox_inches='tight')
+# 	plt.close()

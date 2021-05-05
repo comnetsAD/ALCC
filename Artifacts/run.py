@@ -9,9 +9,9 @@ import threading
 from time import sleep, time
 import threading
 
-USER_NAME= 'root'
-PASSWORD = 'bremen2013'
-IP_ADDRESS = '192.168.0.180'
+USER_NAME= 'cuda'
+PASSWORD = 'cuda'
+IP_ADDRESS = '10.224.41.106'
 FILE_TO_DOWNLOAD = 'jellyLarge.m4v' #located on cuda's desktop
 
 def positive_int(arg):
@@ -84,7 +84,9 @@ def RunAlccCopa():
 	# os.system("ps | pgrep -f bftpd | sudo xargs kill -9")
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
-	os.system("sudo mv /tmp/2021-* "+args.dir+str(args.name)+"/")
+	os.system("sudo mv ~/Desktop/2021-* "+args.dir+str(args.name)+"/")
+	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
+	# os.system("sudo rm -r ~/Desktop/2021-*")
 
 
 def RunAlccVerus():
@@ -112,9 +114,9 @@ def RunAlccVerus():
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
 
-	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
-	os.system("sudo rm -r /tmp/2021-*")
-	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
+	os.system("sudo mv ~/Desktop/2021-*/* "+args.dir+str(args.name)+"/")
+	#os.system("sudo rm -r ~/Desktop/2021-*")
+	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
 
 
 def RunVERUS():

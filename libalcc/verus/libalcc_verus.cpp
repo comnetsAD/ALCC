@@ -22,6 +22,11 @@
 // #include <linux/tcp.h>
 #include <math.h>
 
+#include "../../Applications/bftpd/logging.h"
+
+#include <sys/stat.h>
+#include <sys/types.h>
+
 /* Protocol family, consistent in both kernel prog and user prog. */
 #define MYPROTO NETLINK_USERSOCK
 /* Multicast group, consistent in both kernel prog and user prog. */
@@ -265,17 +270,24 @@ ALCCSocket::ALCCSocket (long queue_length, int new_sockfd, int port)
     char timeString[80];
     strftime (timeString, 80, "%Y-%m-%d_%H:%M:%S", now_tm);
 
-	if (stat (timeString, &info) != 0) {
-        sprintf (command, "exec mkdir /tmp/%s", timeString);
-        system(command);
+	if (stat(timeString, & info) != 0) {
+        sprintf(command, "2021-alcc-verus");
+        // int i = system(command);
+
+    if (mkdir(command, 0777) == -1)
+        bftpd_log ("Error %s: %d \n", command, errno);
+    else
+        bftpd_log ("Directory created");
+
+    bftpd_log ("qqqq \n");
     }
 	cout << timeString << endl;
 
-   sprintf (command, "/tmp/%s/Verus.out", timeString);
+   sprintf (command, "2021-alcc-verus/Verus.out", timeString);
    verusLog.open(command);
-   sprintf (command, "/tmp/%s/Losses.out", timeString);
+   sprintf (command, "2021-alcc-verus/Losses.out", timeString);
    lossLog.open(command,ios::out);
-   sprintf (command, "/tmp/%s/Receiver.out", timeString);
+   sprintf (command, "2021-alcc-verus/Receiver.out", timeString);
    receiverLog.open(command,ios::out);
 
     gettimeofday(&startTime,NULL);

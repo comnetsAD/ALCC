@@ -14,6 +14,10 @@
 #include <linux/netlink.h>
 #include <math.h>
 #include <chrono>
+#include "../../Applications/bftpd/logging.h"
+
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #define MYPROTO NETLINK_USERSOCK
 # define NETLINK_TEST 17
@@ -155,7 +159,7 @@ ALCCSocket::ALCCSocket(long queue_length, int new_sockfd, int port)
 	this->sending_queue = new Circular_Queue(queue_length);
 	this->port = port;
 
-    pthread_mutex_init( & lockList, NULL);
+  pthread_mutex_init( & lockList, NULL);
 
 	struct stat info;
 	time_t now;
@@ -166,13 +170,20 @@ ALCCSocket::ALCCSocket(long queue_length, int new_sockfd, int port)
 	strftime(timeString, 80, "%Y-%m-%d_%H:%M:%S", now_tm);
 
 	if (stat(timeString, & info) != 0) {
-		sprintf(command, "exec mkdir /tmp/%s", timeString);
-		system(command);
+		sprintf(command, "2021-alcc-copa");
+		// int i = system(command);
+
+    if (mkdir(command, 0777) == -1)
+        bftpd_log ("Error %s: %d \n", command, errno);
+    else
+        bftpd_log ("Directory created");
+
+    bftpd_log ("qqqq \n");
 	}
 
-	sprintf(command, "/tmp/%s/info.out", timeString);
+	sprintf(command, "2021-alcc-copa/info.out");
 	infoLog.open(command, ios::out);
-	sprintf(command, "/tmp/%s/Receiver.out", timeString);
+	sprintf(command, "2021-alcc-copa/Receiver.out");
 	receiverLog.open(command, ios::out);
 
 	gettimeofday( & startTime, NULL);

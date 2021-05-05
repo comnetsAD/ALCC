@@ -152,11 +152,8 @@ def parse_delay(filename):
 
 for trace in [sys.argv[1]]: #"ATT-LTE-driving-2016.down","TMobile-LTE-driving.down","TMobile-UMTS-driving.down","Verizon-EVDO-driving.down","Verizon-LTE-driving.down","Highway","Corniche","CityDrive","City","CampusWalk","Campus","highwayGold","rapidGold","ATT-LTE-driving.down","cellularGold"]: # , 
 
-	# totalThroughput = {'copa':[], 'alccCopa':[]}
-	# totalDelay = {'copa':[], 'alccCopa':[]}
-	totalThroughput = {'alccCopa':[]}
-	totalDelay = {'alccCopa':[]}
-
+	totalThroughput = {'copa':[], 'alccCopa':[]}
+	totalDelay = {'copa':[], 'alccCopa':[]}
 	
 	for i in range(1,int(sys.argv[2])+1): #21
 		print i
@@ -181,13 +178,11 @@ for trace in [sys.argv[1]]: #"ATT-LTE-driving-2016.down","TMobile-LTE-driving.do
 
 			ax1.fill_between(range(len(BW)), 0, list(map(scale,BW)),color='#D3D3D3')
 
-			# colors = {"copa":"b", "alccCopa":"r"}
-			colors = {"alccCopa":"r"}
+			colors = {"copa":"b", "alccCopa":"r"}
 
-			# tsharkF = {"copa":"src", "alccCopa":"dst"}
-			# for algo in ["copa","alccCopa"]:
-			for algo in ["alccCopa"]:	
-				#os.system("tshark -r ./{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./{0}/{1}{2}/throughput.csv".format(algo,trace,i,tsharkF[algo]))
+			tsharkF = {"copa":"src", "alccCopa":"dst"}
+			for algo in ["copa","alccCopa"]:
+				os.system("tshark -r ./{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./{0}/{1}{2}/throughput.csv".format(algo,trace,i,tsharkF[algo]))
 
 				if algo == 'copa':
 					delays, delayTimes = parse_delay_copa("./{0}/{1}{2}/info.out".format(algo,trace,i))
@@ -232,12 +227,10 @@ for trace in [sys.argv[1]]: #"ATT-LTE-driving-2016.down","TMobile-LTE-driving.do
 	fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w") 
 	fig.tight_layout(pad=2.0)
 
-	# colors= {'alccCopa':"red", "copa":"blue"}
-	colors= {'alccCopa':"red"}
+	colors= {'alccCopa':"red", "copa":"blue"}
 
 
-	# for name in ["alccCopa","copa"]:
-	for name in ["alccCopa"]:
+	for name in ["alccCopa","copa"]:
 
 		print totalThroughput
 		
@@ -262,10 +255,8 @@ for trace in [sys.argv[1]]: #"ATT-LTE-driving-2016.down","TMobile-LTE-driving.do
 	fig, (ax1, ax2) = plt.subplots(2) 
 	fig.tight_layout(pad=2.0)
 
-	# colors= {"alccCopa":"red", 'copa':"blue"}
-	colors= {"alccCopa":"red"}
-	# for name in ["alccCopa","copa"]:
-	for name in ["alccCopa"]:
+	colors= {"alccCopa":"red", 'copa':"blue"}
+	for name in ["alccCopa","copa"]:
 		a,b = cdfplot(totalThroughput[name])
 		ax1.plot(a, b, label=name, color=colors[name])
 
@@ -319,10 +310,8 @@ for trace in [sys.argv[1]]: #"ATT-LTE-driving-2016.down","TMobile-LTE-driving.do
 	  return tmp
 
 
-	# labels = ["alccCopa","copa"]
-	labels = ["alccCopa"]
-	# colors=['r','b']
-	colors=['r']
+	labels = ["alccCopa","copa"]
+	colors=['r','b']
 	fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
 	#fig = plt.figure(figsize=(6,2), facecolor='w')
 	#ax = plt.gca()
