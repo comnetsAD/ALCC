@@ -261,7 +261,7 @@ for trace in [sys.argv[1]]:
 				print "./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out"
 				delays, delayTimes = parse_delay("./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out")
 
-				print delays
+				#print delays
 				ax2.plot(delayTimes, delays, color=colors[algo], lw=3, rasterized=True, label=algo)
 				totalDelay[algo] += delays
 				totalDelay2[algo][i-1] = delays

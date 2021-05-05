@@ -1,12 +1,12 @@
 #!/bin/bash
 
-time=50
+time=300
 dir=Results
 
 for trace in CampusWalk Highway cellularGold Corniche; do 
 	
 	i=1
-	end=2
+	end=20
 	while [ $i -le $end ]; do
 		echo $trace$i
 

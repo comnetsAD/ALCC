@@ -9,10 +9,10 @@ import threading
 from time import sleep, time
 import threading
 
-USER_NAME= 'cuda'
-PASSWORD = 'cuda'
-IP_ADDRESS = '10.224.41.106'
-FILE_TO_DOWNLOAD = 'jellyLarge.m4v' #located on cuda's desktop
+USER_NAME= 'alcc'
+PASSWORD = 'password'
+IP_ADDRESS = '10.0.2.15'
+FILE_TO_DOWNLOAD = 'sampleVideo.mp4' #located on cuda's desktop
 
 def positive_int(arg):
         arg = int(arg)
@@ -85,6 +85,7 @@ def RunAlccCopa():
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
 	os.system("sudo mv ~/Desktop/2021-* "+args.dir+str(args.name)+"/")
+	os.system("sudo rm -r ~/Desktop/2021-*")
 	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
 	# os.system("sudo rm -r ~/Desktop/2021-*")
 
@@ -115,7 +116,7 @@ def RunAlccVerus():
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
 
 	os.system("sudo mv ~/Desktop/2021-*/* "+args.dir+str(args.name)+"/")
-	#os.system("sudo rm -r ~/Desktop/2021-*")
+	os.system("sudo rm -r ~/Desktop/2021-*")
 	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
 
 
