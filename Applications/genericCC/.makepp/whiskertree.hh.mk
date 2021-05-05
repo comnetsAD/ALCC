@@ -1,0 +1,6 @@
+LIBS=
+SIGNATURE=1620192243,1154
+INCLUDES=dna.pb.h memoryrange.hh whisker.hh
+C_MD5_SUM=567N5CeKEnFc16MoWtqsgg
+SYSTEM_INCLUDES=array
+END=

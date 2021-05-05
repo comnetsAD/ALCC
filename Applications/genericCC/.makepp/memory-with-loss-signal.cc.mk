@@ -1,0 +1,6 @@
+LIBS=
+SIGNATURE=1620192243,4309
+INCLUDES=memory-with-loss-signal.hh
+C_MD5_SUM=YXoqch7r1zaGbzXObhrRWg
+SYSTEM_INCLUDES=
+END=
