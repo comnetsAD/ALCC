@@ -204,3 +204,26 @@ $ python plotcopa.py Corniche 20 300
 ````
 
 You can view the results inside the figures folder
+
+#### Generating Figure 11 and 12 (ALCC verus and copa over different TCP variants)
+
+````sh
+$ cd Artifacts
+$ ./run_verus_tcp_variants.sh
+$ ./run_copa_tcp_variants.sh
+$ cd Results
+$ python plot_verus_tcp_flavors.py
+$ python plot_copa_tcp_flavors.py
+````
+
+#### Generating Figure 13 (ALCC verus over losses)
+
+````sh
+$ cd Artifacts
+$ ./run_verus_losses.sh
+$ cd Results
+$ python plot_verus_losses.py
+````
+
+
+#### Generating Figure 8,9, and 10 (Copa vs. ALCC Copa)
