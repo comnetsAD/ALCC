@@ -224,6 +224,3 @@ $ ./run_verus_losses.sh
 $ cd Results
 $ python plot_verus_losses.py
 ````
-
-
-#### Generating Figure 8,9, and 10 (Copa vs. ALCC Copa)
