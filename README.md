@@ -70,6 +70,12 @@ $ make
 $ sudo insmod alcc_kernel.ko 
 ```
 
+#### Virtual Box image
+If you would like to immediately test the functionality of ALCC without having to install anything, we have provided a virtual box image that you can add which has everything installed and pre-configured. You can download the image from the link below. Once you login into the VM, you can find the ALCC folder under the home directory. The user name is 'alcc' and the password is 'password'
+
+https://drive.google.com/drive/folders/1QTdeoMXDx_r6YfpL8yRENkla4HtRN33V?usp=sharing
+
+
 #### Generating Figure 4,5, and 6 (Verus vs. ALCC verus)
 
 Before running the bftpd server, make sure you make changes to the following files.
