@@ -90,6 +90,7 @@ def RunAlccCopa():
 	os.system("sudo mv ~/Desktop/2021-* "+args.dir+str(args.name)+"/")
 	os.system("sudo rm -r ~/Desktop/2021-*")
 	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
+	os.system("sudo rm sampleVideo.mp4*")
 
 def RunAlccVerus():
 	output = "Not"
@@ -119,6 +120,7 @@ def RunAlccVerus():
 	os.system("sudo mv ~/Desktop/2021-*/* "+args.dir+str(args.name)+"/")
 	os.system("sudo rm -r ~/Desktop/2021-*")
 	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
+	os.system("sudo rm sampleVideo.mp4*")
 
 def RunVERUS():
 	if not os.path.exists(args.dir + '/verus'):
@@ -170,7 +172,8 @@ def RunAlccVerusCubic():
 	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
 	os.system("sudo rm -r /tmp/2021-*")
 	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
-
+	os.system("sudo rm sampleVideo.mp4*")
+	
 def RunAlccVerusCubicNL():
 	output = "Not"
 	while output != "":
@@ -199,7 +202,7 @@ def RunAlccVerusCubicNL():
 	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
 	os.system("sudo rm -r /tmp/2021-*")
 	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
-
+	os.system("sudo rm sampleVideo.mp4*")
 
 if __name__ == '__main__':
 	parser = ArgumentParser(description="Shallow queue tests")
