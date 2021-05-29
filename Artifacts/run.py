@@ -12,7 +12,7 @@ import threading
 USER_NAME= 'alcc'
 PASSWORD = 'password'
 IP_ADDRESS = '10.0.2.15'
-FILE_TO_DOWNLOAD = 'sampleVideo.mp4' #located on cuda's desktop
+FILE_TO_DOWNLOAD = 'sampleVideo.mp4'
 
 def positive_int(arg):
         arg = int(arg)
@@ -31,6 +31,10 @@ def simpleRun():
 	 	RunVERUS()
 	elif args.algo == 'copa':
 	 	RunCopa()
+	elif args.algo == 'alccVerusCubic':
+		RunAlccVerusCubic()
+	elif args.algo == 'alccVerusCubicNL':
+		RunAlccVerusCubicNL()	
 	print ("Finished")
 	return
 
@@ -63,6 +67,7 @@ def RunAlccCopa():
 	while output != "":
 		output = os.popen('netstat -o | grep 60001').read()
 		if output != "":
+			os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 			print output.split()[-1]
 		sleep (1)
 
@@ -72,8 +77,6 @@ def RunAlccCopa():
 		os.makedirs(args.dir+ "/alccCopa/"+str(args.name))
 
 	args.dir = args.dir+"/alccCopa/"
-	# command = "sudo ./../Applications/bftpd/bftpd -D -c bftpd.conf"
-	# pro = Popen(command, stdout=PIPE, shell=True, preexec_fn=os.setsid)
 
 	print("Begin " + str(args.time) + " seconds of AlCC_Copa transmission")
 	command = "mm-delay 10 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
@@ -81,20 +84,19 @@ def RunAlccCopa():
 	p = Popen(command, stdin=PIPE,shell=True)
 	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
 
-	# os.system("ps | pgrep -f bftpd | sudo xargs kill -9")
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
+	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 	os.system("sudo mv ~/Desktop/2021-* "+args.dir+str(args.name)+"/")
 	os.system("sudo rm -r ~/Desktop/2021-*")
 	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
-	# os.system("sudo rm -r ~/Desktop/2021-*")
-
 
 def RunAlccVerus():
 	output = "Not"
 	while output != "":
 		output = os.popen('netstat -o | grep 60001').read()
 		if output != "":
+			os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 			print output.split()[-1]
 		sleep (1)
 
@@ -111,14 +113,12 @@ def RunAlccVerus():
 	p = Popen(command, stdin=PIPE,shell=True)
 	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
 
-	# os.system("ps | pgrep -f bftpd | sudo xargs kill -9")
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
-
+	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 	os.system("sudo mv ~/Desktop/2021-*/* "+args.dir+str(args.name)+"/")
 	os.system("sudo rm -r ~/Desktop/2021-*")
 	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
-
 
 def RunVERUS():
 	if not os.path.exists(args.dir + '/verus'):
@@ -139,7 +139,66 @@ def RunVERUS():
 
 	os.system("ps | pgrep -f verus_server | xargs kill -9")
 	os.system("ps | pgrep -f verus_client | xargs kill -9")
+	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 	os.system("mv client_60001* "+args.dir + "/verus/"+str(args.name)+"/")
+
+def RunAlccVerusCubic():
+	output = "Not"
+	while output != "":
+		output = os.popen('netstat -o | grep 60001').read()
+		if output != "":
+			os.system("sudo kill -9 `sudo lsof -t -i:60001`")
+			print output.split()[-1]
+		sleep (1)
+
+	if not os.path.exists(args.dir + '/alccVerusCubic'):
+		os.makedirs(args.dir+ "/alccVerusCubic")
+	if not os.path.exists(args.dir + '/alccVerusCubic/'+str(args.name)):
+		os.makedirs(args.dir+ "/alccVerusCubic/"+str(args.name))
+
+	args.dir = args.dir+"/alccVerusCubic/"
+	
+	print("Begin " + str(args.time) + " seconds of Model VERUS transmission")
+	command = "mm-delay 10 mm-loss uplink 0.01 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+
+	p = Popen(command, stdin=PIPE,shell=True)
+	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
+
+	os.system("ps | pgrep -f wget | sudo xargs kill -9")
+	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
+	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
+	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
+	os.system("sudo rm -r /tmp/2021-*")
+	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
+
+def RunAlccVerusCubicNL():
+	output = "Not"
+	while output != "":
+		output = os.popen('netstat -o | grep 60001').read()
+		if output != "":
+			os.system("sudo kill -9 `sudo lsof -t -i:60001`")
+			print output.split()[-1]
+		sleep (1)
+
+	if not os.path.exists(args.dir + '/alccVerusCubicNL'):
+		os.makedirs(args.dir+ "/alccVerusCubicNL")
+	if not os.path.exists(args.dir + '/alccVerusCubicNL/'+str(args.name)):
+		os.makedirs(args.dir+ "/alccVerusCubicNL/"+str(args.name))
+
+	args.dir = args.dir+"/alccVerusCubicNL/"
+	
+	print("Begin " + str(args.time) + " seconds of Model VERUS transmission")
+	command = "mm-delay 10 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+
+	p = Popen(command, stdin=PIPE,shell=True)
+	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
+
+	os.system("ps | pgrep -f wget | sudo xargs kill -9")
+	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
+	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
+	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
+	os.system("sudo rm -r /tmp/2021-*")
+	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
 
 
 if __name__ == '__main__':

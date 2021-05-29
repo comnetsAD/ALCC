@@ -1,5 +1,4 @@
 #-----------------------------Plot Run Commands------------------------------------#
-
 #  python plotverus.py Highway 5 300 <-------python plotverus.py channeltrace numberoffiles timedurationoftheruns
 import os
 import numpy as np
@@ -66,13 +65,8 @@ def cdfplot(data_in):
 						 data_in))
 
 	data_len = len(data)
-	# if data_len == 0:
-	# 	LOG.info("no data to plot")
-	# 	return
 	simple_cdf, simple_data = simplify_cdf(data)
 
-	#label = name
-	#line = _axis.plot(simple_data, simple_cdf, drawstyle='steps', label=label)
 	return simple_data, simple_cdf
 
 def scale(a):
@@ -124,50 +118,6 @@ def parse_throughput(filename):
 	throughput_file.close()
 	return pktsize, times
 
-# def parse_delay_alccVerus (filename):
-# 	delays = []
-# 	times = []
-# 	delay_file = open(filename,"r")
-# 	tokens = delay_file.readline().strip().split()
-# 	sTime = float(tokens[0])
-# 	startTime=sTime
-# 	bucket=[]
-# 	bucket.append(float(tokens[1]))
-# 	for line in delay_file:
-# 		tokens = line.strip().split()
-# 		if len(tokens) == 2:
-# 			if float(tokens[0])<sTime+0.001:
-# 				bucket.append((float(tokens[1])*1000))
-# 			else:
-# 				delays.append(sum(bucket))
-# 				bucket=[]
-# 				times.append(float(tokens[0])-startTime)
-# 				while float(tokens[0])-sTime > 1.0:
-# 					sTime+=1.0
-	
-# 	delay_file.close()
-
-# 	return  delays, times
-
-# def parse_delay_alccVerus (filename):
-# 	delays = []
-# 	times = []
-# 	cnt = 0
-# 	sTime = -1
-
-# 	delay_file = open(filename,"r")
-# 	delay_file.readline()
-# 	for line in delay_file:
-# 	    tokens = line.strip().split()
-# 	    delays.append((float(tokens[1]))*1000.0)
-
-# 	    if sTime == -1:
-# 	        sTime = (float(tokens[1]))
-
-# 	    times.append((float(tokens[1]))-sTime)
-# 	delay_file.close()
-
-# 	return  delays, times
 def parse_delay_alccVerus(filename):
 	delays = []
 	times = []
@@ -182,7 +132,6 @@ def parse_delay_alccVerus(filename):
 	for line in delay_file:
 		tokens = line.strip().split()
 
-		# if float(tokens[1]) < 10000.0:
 		delays.append((float(tokens[1])*1000))
 		times.append((float(tokens[0])-sTime))
 
@@ -198,8 +147,6 @@ def parse_delay(filename):
 	delay_file = open(filename,"r")
 	tokens = delay_file.readline().strip().split(",")
 	sTime = float(tokens[0])
-	#delays.append((float(tokens[2])))
-	#times.append((float(tokens[0])))
 
 	for line in delay_file:
 		tokens = line.strip().split(",")
@@ -217,9 +164,9 @@ def parse_delay(filename):
 
 	return  delays, times
 
+
 NUM_RUNS = int(sys.argv[2])
 
-# for trace in ["ATT-LTE-driving-2016.down","TMobile-LTE-driving.down","TMobile-UMTS-driving.down","Verizon-EVDO-driving.down","Verizon-LTE-driving.down","Highway","Corniche","CityDrive","City","CampusWalk","Campus","highwayGold","rapidGold","ATT-LTE-driving.down","cellularGold"]: # , 
 for trace in [sys.argv[1]]:
 	totalThroughput = {'verus':[], 'alccVerus':[]}
 	totalDelay = {'verus':[], 'alccVerus':[]}
@@ -227,12 +174,13 @@ for trace in [sys.argv[1]]:
 	totalThroughput2 = {'verus':[[] for i in range(5)], 'alccVerus':[[] for i in range(NUM_RUNS)]}
 	totalDelay2 = {'verus':[[] for i in range(NUM_RUNS)], 'alccVerus':[[] for i in range(NUM_RUNS)]}
 
-	for i in range(1,NUM_RUNS+1): #21
+	for i in range(1,NUM_RUNS+1):
 		print i
-		# try:
-		if True:
+
+		try:
 			fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8,5), facecolor='w', sharex=True)
 			ax = plt.gca()
+
 			# plotting the trace file
 			f1 = open ("../../Eval/channelTraces/{}".format(trace),"r")
 			BW = []
@@ -279,11 +227,6 @@ for trace in [sys.argv[1]]:
 				totalThroughput[algo] += throughputDL
 				totalThroughput2[algo][i-1] = throughputDL
 
-
-				# ax1.set_xlabel("Time (s)")
-				# plt.grid(True, which="both")
-				# plt.show()
-
 			ax1.set_ylabel("Throughput\n(Mbps)")
 			ax1.legend(loc='best', prop={'size':12})
 			ax1.set_xlim([0,int(sys.argv[3])])
@@ -295,11 +238,9 @@ for trace in [sys.argv[1]]:
 
 			plt.savefig('./figures/{0}_{1}{2}.png'.format(algo,trace,i),bbox_inches='tight')
 			plt.close()		
-		# except:
-		# 	continue
-
-
-	sns.set_style("white")
+		except:
+			print ("Error with", algo, trace, i)
+			continue
 
 	sns.set_style("white")
 	fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w") 
@@ -324,11 +265,9 @@ for trace in [sys.argv[1]]:
 	plt.legend(loc='best')
 	ax1.grid()
 	ax2.grid()
-	#plt.show()
 	plt.savefig("./figures/verus_pdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
 	plt.close()
 
-	#fig, (ax1, ax2) = plt.subplots(2) 
 	fig, (ax1, ax2) = plt.subplots(2, figsize=(8,5), facecolor="w") 
 	fig.tight_layout(pad=2.0)
 
@@ -344,19 +283,14 @@ for trace in [sys.argv[1]]:
 
 	ax1.set_ylabel('Throughput CDF')
 	ax1.set_xlabel('Throughput (Mbps)')
-
 	ax2.set_ylabel('Delay CDF')
 	ax2.set_xlabel('Delay (ms)')
 
-	# plt.xticks(np.arange(min(data), max(data)+1, 20.0))
-	#plt.xticks(rotation=90)
+
 	plt.xlim([0,800])
-	# plt.ylim([0.9,1])
-	# plt.margins(0.02)
 	plt.legend(loc='best')
 	ax1.grid()
 	ax2.grid()
-	#plt.show()
 	plt.savefig("./figures/verus_cdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
 	plt.close()
 
@@ -373,7 +307,6 @@ for trace in [sys.argv[1]]:
 			tmp.append(data_sorted[k])
 			break
 
-	  # tmp.append(sum(data_sorted)/len(data_sorted))
 	  for k in range(len(cdf)):
 		if cdf[k] >= 0.5:
 			tmp.append(data_sorted[k])
@@ -389,17 +322,14 @@ for trace in [sys.argv[1]]:
 			tmp.append(data_sorted[k])
 			break
 
-	  # print tmp
 	  return tmp
 
 
 	labels = ["alccVerus","verus"]
 	colors=['r','b']
 
-	#fig, (ax) = plt.subplots(1) 
 	fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
-	#fig = plt.figure(figsize=(6,2), facecolor='w')
-	#ax = plt.gca()
+
 	overallThroughput = []
 	overallDelay = []
 
@@ -421,79 +351,17 @@ for trace in [sys.argv[1]]:
 		ax.add_patch(ellipse)
 		plt.plot(overallDelay[i][1],overallThroughput[i][1],marker='x',mew=2,color=colors[i])
 
-	# box = plt.get_position()
-	# plt.position([box.x0, box.y0 + box.height * 0.1,
-	#            box.width, box.height * 0.9])
 	plt.legend(loc='best')
-	#plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.3), ncol=4, fontsize="xx-small")
 	plt.grid()  
 
 	plt.ylabel("Throughput (Mbps)")
 	plt.xlabel("Delay (s)")
-	#plt.xscale("log", nonposx='clip')
-
-	# plt.ylim([0,25])
-	# plt.xlim([0,300])
-
 
 	try:
 		plt.xlim([0, 1.2*max(overallDelay[0][2],overallDelay[1][2])])
 		plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
 	except:
 		pass
-	# if "highway" in trace:
-	#     plt.ylim([0,25])
-	# else:
-	#     plt.ylim([0,20])
 
 	plt.savefig("./figures/verus_overall_"+trace+'.png',bbox_inches='tight')
 	plt.close()
-	#plt.xscale("linear", nonposx='clip')
-	#plt.savefig(sys.argv[1]+'_overall2.pdf',bbox_inches='tight')
-
-
-
-
-# 	labels = ["alccVerus","verus"]
-# 	markers = ['x','s','+','o','.']
-# 	colors=['r','b']
-
-# 	#fig, (ax) = plt.subplots(1) 
-# 	fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
-
-# 	m = 0
-# 	n = 0
-
-# 	for i in range(len(labels)):
-# 		for j in range(NUM_RUNS):
-
-# 			a = simple_cdf(totalDelay2[labels[i]][j])[1]
-# 			b = simple_cdf(totalThroughput2[labels[i]][j])[1]
-
-# 			print a, b
-
-# 			if a > m:
-# 				m = a
-# 			if b > n:
-# 				n = b
-
-# 			if j == 0:
-# 				plt.plot(a,b,marker=markers[0],mew=2,color=colors[i], label=labels[i])
-# 			else:
-# 				plt.plot(a,b,marker=markers[0],mew=2,color=colors[i])
-
-# 	plt.legend(loc='upper left')
-# 	plt.grid()  
-
-# 	plt.ylabel("Throughput (Mbps)")
-# 	plt.xlabel("Delay (s)")
-
-# 	plt.xlim([0,m*1.2])
-# 	plt.ylim([0,n*1.2])
-# #	try:
-# #		plt.xlim([0, 1.2*max(overallDelay[0][2],overallDelay[1][2])])
-# #		plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
-# #	except:
-# #		pass
-# 	plt.savefig("./figures/overall2_"+trace+'.png',bbox_inches='tight')
-# 	plt.close()

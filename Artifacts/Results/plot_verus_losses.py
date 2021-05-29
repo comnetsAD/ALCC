@@ -69,7 +69,6 @@ def parse_throughput(filename):
 		if sTime - firstTime > float(sys.argv[2]):
 			break
 
-
 	throughput_file.close()
 	return pktsize, times
 
@@ -133,7 +132,6 @@ def simple_cdf(data):
 			tmp.append(data_sorted[k])
 			break
 
-	# tmp.append(sum(data_sorted)/len(data_sorted))
 	for k in range(len(cdf)):
 		if cdf[k] >= 0.5:
 			tmp.append(data_sorted[k])
@@ -168,7 +166,6 @@ for trace in [sys.argv[1]]:
 	throughputDL3=[]
 	timeDL3=[]
 
-
 	if True:
 		
 		for algo in labels:
@@ -196,9 +193,7 @@ for trace in [sys.argv[1]]:
 	ax2.plot(delayTimes1, delays1, color="g", lw=5)
 	ax2.plot(delayTimes2, delays2, color="#ff0000", lw=5)
 	ax2.plot(delayTimes3, delays3, color="#0000ff", lw=5)
-	# ax2.set_xlim([0,max(delayTimes3)])
 	ax2.set_xlim([0,250])
-	#ax2.set_ylim([10,10001])
 	ax2.set_xlabel('Time (s)')
 	ax2.set_ylabel('Delay (ms)')
 	ax2.set_yscale('log',basey=10)
@@ -209,7 +204,6 @@ for trace in [sys.argv[1]]:
 	nextTime = 2900
 	cnt = 0
 	for line in f1:
-	    #print line
 	    if int(line.strip()) > nextTime:
 	        BW.append(cnt*1492*8)
 	        cnt = 0
@@ -228,7 +222,6 @@ for trace in [sys.argv[1]]:
 	ax1.set_ylim([0,50])
 
 	fig.legend((p1,p2,p3),(p1.get_label(),p2.get_label(),p3.get_label()),ncol=3,loc="upper center")
-	#plt.show()
 	plt.subplots_adjust(top=0.85)
 
 	fig.savefig('./figures/verusloss.pdf',bbox_inches='tight')

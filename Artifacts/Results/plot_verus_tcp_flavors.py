@@ -68,7 +68,6 @@ def parse_throughput(filename):
 		if sTime - firstTime > float(sys.argv[2]):
 			break
 
-
 	throughput_file.close()
 	return pktsize, times
 
@@ -86,7 +85,6 @@ def parse_delay_alccVerus(filename):
 	for line in delay_file:
 		tokens = line.strip().split()
 
-		# if float(tokens[1]) < 10000.0:
 		delays.append((float(tokens[1])*1000))
 		times.append((float(tokens[0])-sTime))
 
@@ -132,7 +130,6 @@ def simple_cdf(data):
 			tmp.append(data_sorted[k])
 			break
 
-	# tmp.append(sum(data_sorted)/len(data_sorted))
 	for k in range(len(cdf)):
 		if cdf[k] >= 0.5:
 			tmp.append(data_sorted[k])
@@ -153,12 +150,6 @@ def simple_cdf(data):
 
 for trace in [sys.argv[1]]:
 	labels = ["alccVeruscubic","alccVerusbic","alccVerusreno","verus"]
-	# labels = ["alccVerusCubic","verus"]
-
-#	fig, (ax) = plt.subplots(1) 
-	#sns.set_style("white")
-	#fig, (ax1, ax2) = plt.subplots(2) 
-	#fig.tight_layout(pad=2.0)
 
 	sns.set_style("white")
 	fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w") 
@@ -175,7 +166,6 @@ for trace in [sys.argv[1]]:
 		for algo in labels:
 			print algo
 
-			
 			# plotting throughput
 			throughputDL = []
 			timeDL = []
@@ -192,9 +182,7 @@ for trace in [sys.argv[1]]:
 					totalDelay[algo] += delays
 					totalThroughput[algo] += throughputDL
 
-		for name in labels:
-		#	print totalThroughput
-			
+		for name in labels:			
 			sns.kdeplot(totalThroughput[name] , color=colors[name], shade=True, ax = ax1, lw=3)
 			sns.kdeplot(totalDelay[name] , color=colors[name], label=name, shade=True, ax = ax2, lw=3)
 
@@ -210,7 +198,6 @@ for trace in [sys.argv[1]]:
 	plt.legend(loc='best')
 	ax1.grid()
 	ax2.grid()
-	#plt.show()
 	plt.savefig("./figures/verus_TCP_pdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
 	plt.close()
 

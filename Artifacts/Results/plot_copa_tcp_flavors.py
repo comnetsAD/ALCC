@@ -47,6 +47,7 @@ def simplify_cdf(data):
 				simple_data.append(data_value)
 
 	assert len(simple_cdf) == len(simple_data)
+
 	# to have cdf up to 1
 	simple_cdf.append(1)
 	simple_data.append(data[-1])
@@ -63,13 +64,8 @@ def cdfplot(data_in):
 						 data_in))
 
 	data_len = len(data)
-	# if data_len == 0:
-	# 	LOG.info("no data to plot")
-	# 	return
 	simple_cdf, simple_data = simplify_cdf(data)
 
-	#label = name
-	#line = _axis.plot(simple_data, simple_cdf, drawstyle='steps', label=label)
 	return simple_data, simple_cdf
 
 def scale(a):
@@ -98,7 +94,6 @@ def parse_throughput(filename):
 
 			while float(tokens[0])-sTime > 1.0:
 				sTime += 1.0
-
 
 	throughput_file.close()
 	return pktsize, times
@@ -139,9 +134,6 @@ def parse_delay(filename):
 	for line in delay_file:
 		tokens = line.strip().split(",")
 
-		#if float(tokens[1]) > 1000.0:
-		#	print line.strip()
-
 		if float(tokens[1]) < 10000.0:
 			delays.append((float(tokens[1])))
 			times.append((float(tokens[0])-sTime))
@@ -163,7 +155,6 @@ def simple_cdf(data):
 			tmp.append(data_sorted[k])
 			break
 
-	# tmp.append(sum(data_sorted)/len(data_sorted))
 	for k in range(len(cdf)):
 		if cdf[k] >= 0.5:
 			tmp.append(data_sorted[k])
@@ -174,14 +165,11 @@ def simple_cdf(data):
 			tmp.append(data_sorted[k])
 			break
 
-	# print tmp
 	return tmp
 
 sns.set_style("white")
 fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w") 
 fig.tight_layout(pad=2.0)
-
-#fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
 
 for trace in [sys.argv[1]]:
 	labels = ["alccCopacubic","alccCopabic","alccCopareno","copa"]
@@ -231,9 +219,7 @@ plt.legend(loc='best')
 
 ax1.grid()
 ax2.grid()
-#plt.show()
 plt.savefig("./figures/copa_TCP_pdf_{0}.png".format(trace),dpi=300,bbox_inches='tight')
-# plt.close()
 
 fig,(ax) = plt.subplots(1,figsize=(8,5),facecolor="w")
 
@@ -258,22 +244,16 @@ for i in range(len(labels)):
 	ax.add_patch(ellipse)
 	plt.plot(overallDelay[i][1],overallThroughput[i][1],marker='x',mew=3,color=colors[labels[i]])
 
-# box = plt.get_position()
-# plt.position([box.x0, box.y0 + box.height * 0.1,
-#            box.width, box.height * 0.9])
 plt.legend(loc='lower left')
-#plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.3), ncol=4, fontsize="xx-small")
 plt.grid()  
 
 plt.ylabel("Throughput (Mbps)")
 plt.xlabel("Delay (s)")
-
 
 try:
 	plt.xlim([0, 1.12*max(overallDelay[0][2],overallDelay[1][2])])
 	plt.ylim([0, 1.12*max(overallThroughput[0][2],overallThroughput[1][2])])
 except:
 	pass
-
 
 plt.savefig("./figures/copa_overall_TCP_"+trace+'.png',bbox_inches='tight')
