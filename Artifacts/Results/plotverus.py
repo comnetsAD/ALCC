@@ -171,13 +171,14 @@ for trace in [sys.argv[1]]:
 	totalThroughput = {'verus':[], 'alccVerus':[]}
 	totalDelay = {'verus':[], 'alccVerus':[]}
 
-	totalThroughput2 = {'verus':[[] for i in range(5)], 'alccVerus':[[] for i in range(NUM_RUNS)]}
+	totalThroughput2 = {'verus':[[] for i in range(NUM_RUNS)], 'alccVerus':[[] for i in range(NUM_RUNS)]}
 	totalDelay2 = {'verus':[[] for i in range(NUM_RUNS)], 'alccVerus':[[] for i in range(NUM_RUNS)]}
 
 	for i in range(1,NUM_RUNS+1):
 		print i
 
-		try:
+		#try:
+		if True:
 			fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8,5), facecolor='w', sharex=True)
 			ax = plt.gca()
 
@@ -238,9 +239,9 @@ for trace in [sys.argv[1]]:
 
 			plt.savefig('./figures/{0}_{1}{2}.png'.format(algo,trace,i),bbox_inches='tight')
 			plt.close()		
-		except:
-			print ("Error with", algo, trace, i)
-			continue
+		#except:
+		#	print ("Error with", algo, trace, i)
+		#	continue
 
 	sns.set_style("white")
 	fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w") 

@@ -51,11 +51,11 @@ def RunCopa():
 	sleep(2)
 
 	print("Begin " + str(args.time) + " seconds of copa transmission")
-	command = "mm-delay 10 mm-link --meter-uplink --meter-uplink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	command = "mm-delay 10 mm-link --meter-uplink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
 
 	print command
 	p = Popen(command, stdin=PIPE,shell=True)
-	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n export MIN_RTT=1000 && ../Applications/genericCC/sender serverip=$MAHIMAHI_BASE offduration=0 onduration=900000000 cctype=markovian delta_conf=do_ss:auto:0.02 traffic_params=byte_switched,num_cycles=5 > info.out & \n sleep " + str(args.time) + " \n exit")
+	p.communicate("sudo tcpdump -i any -s 96 -w " + args.dir + "/" + args.name + "/log.pcap & \n export MIN_RTT=1000 && ../Applications/genericCC/sender serverip=$MAHIMAHI_BASE offduration=0 onduration=900000000 cctype=markovian delta_conf=do_ss:auto:0.02 traffic_params=byte_switched,num_cycles=5 > info.out & \n sleep " + str(args.time) + " \n exit")
 
 	os.system("ps | pgrep -f /genericCC/sender | xargs kill -9")
 	os.system("ps | pgrep -f /genericCC/receiver | xargs kill -9")
@@ -79,10 +79,10 @@ def RunAlccCopa():
 	args.dir = args.dir+"/alccCopa/"
 
 	print("Begin " + str(args.time) + " seconds of AlCC_Copa transmission")
-	command = "mm-delay 10 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	command = "mm-delay 10 mm-link --meter-downlink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
 
 	p = Popen(command, stdin=PIPE,shell=True)
-	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
+	p.communicate("sudo tcpdump -i any -s 96 -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
 
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
@@ -109,10 +109,10 @@ def RunAlccVerus():
 	args.dir = args.dir+"/alccVerus/"
 	
 	print("Begin " + str(args.time) + " seconds of Model VERUS transmission")
-	command = "mm-delay 10 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	command = "mm-delay 10 mm-link --meter-downlink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
 
 	p = Popen(command, stdin=PIPE,shell=True)
-	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
+	p.communicate("sudo tcpdump -i any -s 96 -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
 
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
@@ -133,7 +133,7 @@ def RunVERUS():
 	print command
 	pro = Popen(command, stdout=PIPE, shell=True, preexec_fn=os.setsid)
 	
-	command = "mm-delay 10 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	command = "mm-delay 10 mm-link --meter-downlink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
 	print command
 
 	p = Popen(command, stdin=PIPE,shell=True)
@@ -161,10 +161,10 @@ def RunAlccVerusCubic():
 	args.dir = args.dir+"/alccVerusCubic/"
 	
 	print("Begin " + str(args.time) + " seconds of Model VERUS transmission")
-	command = "mm-delay 10 mm-loss uplink 0.01 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	command = "mm-delay 10 mm-loss uplink 0.01 mm-link --meter-downlink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
 
 	p = Popen(command, stdin=PIPE,shell=True)
-	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
+	p.communicate("sudo tcpdump -i any -s 96 -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
 
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
@@ -191,10 +191,10 @@ def RunAlccVerusCubicNL():
 	args.dir = args.dir+"/alccVerusCubicNL/"
 	
 	print("Begin " + str(args.time) + " seconds of Model VERUS transmission")
-	command = "mm-delay 10 mm-link --meter-downlink --meter-downlink-delay ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	command = "mm-delay 10 mm-link --meter-downlink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
 
 	p = Popen(command, stdin=PIPE,shell=True)
-	p.communicate("sudo tcpdump -i any -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
+	p.communicate("sudo tcpdump -i any -s 96 -w " + args.dir + "/" + args.name + "/log.pcap & \n wget ftp://{0}:{1}@{2}/{3} & \n sleep ".format(USER_NAME, PASSWORD, IP_ADDRESS, FILE_TO_DOWNLOAD) + str(args.time) + " \n exit")
 
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")

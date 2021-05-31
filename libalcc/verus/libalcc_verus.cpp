@@ -545,7 +545,7 @@ int ALCCSocket::ALCCSend(int sockfd)
 
                 tempS -= 1;
                 wCrt += 1;
-                write2Log (lossLog, "Sent pkt", std::to_string(pktSeq), "" , "" , "");
+                // write2Log (lossLog, "Sent pkt", std::to_string(pktSeq), "" , "" , "");
 
                 seqNumbersList[pktSeq]=pktTime;
                 
@@ -647,7 +647,7 @@ int ALCCSocket::ALCCReceive(int sockfd)
                 continue;
 
 
-            write2Log (receiverLog, "KERNEL MSG", std::to_string(rcv_seq), std::to_string(ack_seq), std::to_string(src_port), std::to_string(dst_port));
+            // write2Log (receiverLog, "KERNEL MSG", std::to_string(rcv_seq), std::to_string(ack_seq), std::to_string(src_port), std::to_string(dst_port));
 
             // if (dst_port != 60001 || ack_seq == 0)
                 // continue;
@@ -667,7 +667,7 @@ int ALCCSocket::ALCCReceive(int sockfd)
                 // write2Log (receiverLog, "num", std::to_string(num),"","","");
                 int tmp_numAcks = (ack_seq - startingSeq) / MTU;
 
-                write2Log (receiverLog, "tmp_numAcks", std::to_string(tmp_numAcks), "", "", "");
+                // write2Log (receiverLog, "tmp_numAcks", std::to_string(tmp_numAcks), "", "", "");
 
                 // fix for seq numbers wraparound
                 if (tmp_numAcks < 0) {
@@ -691,7 +691,7 @@ int ALCCSocket::ALCCReceive(int sockfd)
                     seq += 1;
                     startingSeq += MTU;
 
-                    write2Log (receiverLog, "for loop", std::to_string(seq), "", "", "");
+                    // write2Log (receiverLog, "for loop", std::to_string(seq), "", "", "");
 
                     if (seqNumbersList.begin()->first <= seq && seqNumbersList.size() > 0) {
                         //sendTime = seqNumbersList.begin()->second;
@@ -752,9 +752,9 @@ int ALCCSocket::ALCCReceive(int sockfd)
                         wCrt -= 1;
                     }
                 } // end of foor loop
-                write2Log (receiverLog, "END OF FOOR LOOP", "", "", "", "");
+                // write2Log (receiverLog, "END OF FOOR LOOP", "", "", "", "");
             }
-            write2Log (lossLog, "END receiver loop", "", "", "", "");
+            // write2Log (lossLog, "END receiver loop", "", "", "", "");
         }
     }
 

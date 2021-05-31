@@ -44,13 +44,13 @@ static void send_to_alcc(u16 sport, u16 dport, u32 seq, u32 ack_seq)
 
 	int msg_size = 257; 
 
-	printk(KERN_INFO "MSG %s %d", msg, msg_size);
+	// printk(KERN_INFO "MSG %s %d", msg, msg_size);
 
 	int res;
 
 	// printk(KERN_INFO "Netfilter TCP: %u; %u; %lu; %lu \n", sport, dport, (unsigned long)seq, (unsigned long)ack_seq); 
 
-	pr_info("Creating skb.\n");
+	// pr_info("Creating skb.\n");
 	skb = nlmsg_new(NLMSG_ALIGN(msg_size + 1), GFP_KERNEL);
 	if (!skb) {
 		pr_err("Allocation failure.\n");
@@ -61,12 +61,12 @@ static void send_to_alcc(u16 sport, u16 dport, u32 seq, u32 ack_seq)
 
 	strcpy(nlmsg_data(nlh), msg);
 
-	pr_info("Sending skb.\n");
+	// pr_info("Sending skb.\n");
 	res = nlmsg_multicast(nl_sk, skb, 0, NETLINK_TEST, GFP_KERNEL);
 	if (res < 0)
 		pr_info("nlmsg_multicast() error: %d\n", res);
-	else
-		pr_info("Success.\n");
+	// else
+	//	pr_info("Success.\n");
 }
 
 static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
