@@ -3,6 +3,8 @@
 time=300
 dir=Results
 
+sudo sysctl -w net.ipv4.tcp_congestion_control=cubic
+
 # compile bftpd with alcc verus library
 gnome-terminal -- sh -c 'echo "compiling bftpd for alcc copa" && cd ../Applications/bftpd && cp Makefile_copa Makefile && make'
 

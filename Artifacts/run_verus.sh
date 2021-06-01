@@ -1,7 +1,9 @@
 #!/bin/bash
 
-time=300
+time=10
 dir=Results
+
+sudo sysctl -w net.ipv4.tcp_congestion_control=cubic
 
 # compile bftpd with alcc verus library
 gnome-terminal -- sh -c 'echo "compiling bftpd for alcc verus" && cd ../Applications/bftpd && cp Makefile_verus Makefile && make'
@@ -9,7 +11,7 @@ gnome-terminal -- sh -c 'echo "compiling bftpd for alcc verus" && cd ../Applicat
 for trace in highwayGold CityDrive Corniche rapidGold; do
 
 	i=1
-	end=10
+	end=1
 	while [ $i -le $end ]; do
 		echo $trace$i
 
