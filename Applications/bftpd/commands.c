@@ -1244,18 +1244,23 @@ void command_retr(char *filename)
           //control_printf(SL_SUCCESS,"thp: sending data");
           send_status = alcc_send(sock1, buffer+z, i-z, 0);
 
-          // check for dropped connection
           if (send_status < 0)
           {
-             free(buffer);
-             close(phile);
-             close(sock1);
-             alarm(control_timeout);
-             control_printf(SL_SUCCESS, "426 Transfer aborted.");
-             control_printf(SL_SUCCESS, "226 Aborted.");
-             bftpd_log("File transmission interrupted. Send failed.\n");
-             return;
+          	send_status = 0;
           }
+          
+          // check for dropped connection
+          // if (send_status < 0)
+          // {
+          //    free(buffer);
+          //    close(phile);
+          //    close(sock1);
+          //    alarm(control_timeout);
+          //    control_printf(SL_SUCCESS, "426 Transfer aborted.");
+          //    control_printf(SL_SUCCESS, "226 Aborted.");
+          //    bftpd_log("File transmission interrupted. Send failed.\n");
+          //    return;
+          // }
 
           z += send_status;
           //control_printf(SL_SUCCESS, "mengal %d %d.", z, i);

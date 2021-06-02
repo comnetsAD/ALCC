@@ -2,3 +2,5 @@
 *.mk
 *.mod
 *.log
+*.cmd
+*.mod
