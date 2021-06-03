@@ -141,7 +141,7 @@ def RunVERUS():
 
 	os.system("ps | pgrep -f verus_server | xargs kill -9")
 	os.system("ps | pgrep -f verus_client | xargs kill -9")
-	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
+	#os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 	os.system("mv client_60001* "+args.dir + "/verus/"+str(args.name)+"/")
 
 def RunAlccVerusCubic():

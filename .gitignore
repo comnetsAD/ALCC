@@ -4,3 +4,7 @@
 *.log
 *.cmd
 *.mod
+*.Po
+*.log
+*.status
+*.in
