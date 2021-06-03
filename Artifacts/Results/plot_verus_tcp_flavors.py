@@ -35,8 +35,7 @@ def parse_throughput(filename):
 		tokens = throughput_file.readline().strip().split(",")
 	else:
 		tokens = throughput_file.readline().strip().split()
-	print(tokens)
-
+	
 	sTime = float(tokens[0])
 	firstTime = sTime
 	bucket = []
@@ -149,7 +148,7 @@ def simple_cdf(data):
 
 
 for trace in [sys.argv[1]]:
-	labels = ["alccVeruscubic","alccVerusbic","alccVerusreno","verus"]
+	labels = ["cubic","bic","reno","verus"]
 
 	sns.set_style("white")
 	fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w") 
@@ -157,23 +156,24 @@ for trace in [sys.argv[1]]:
 
 	# fig, (ax) = plt.subplots(1, figsize=(8,5), facecolor="w") 
 
-	totalThroughput = {'verus':[], 'alccVeruscubic':[], 'alccVerusreno':[], 'alccVerusbic':[]}
-	totalDelay = {'verus':[], 'alccVeruscubic':[], 'alccVerusreno':[], 'alccVerusbic':[]}
+	totalThroughput = {'verus':[], 'cubic':[], 'reno':[], 'bic':[]}
+	totalDelay = {'verus':[], 'cubic':[], 'reno':[], 'bic':[]}
 
 	if True:
-		colors = {'verus':'b', 'alccVeruscubic':'r', 'alccVerusreno':'g', 'alccVerusbic':'m'}
+		colors = {'verus':'b', 'cubic':'r', 'reno':'g', 'bic':'m'}
 		tsharkF = {"alccVerus":"src"}
 		for algo in labels:
-			print algo
 
 			# plotting throughput
 			throughputDL = []
 			timeDL = []
-			for i in range(1,2):
-				if 'alccVerus' in algo:
-					os.system("tshark -r ./{0}/alccVerus/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./{0}/alccVerus/{1}{2}/throughput.csv".format(algo,trace,i))
-					throughputDL, timeDL = parse_throughput("./{0}/alccVerus/{1}{2}/throughput.csv".format(algo,trace,i))
-					delays, delayTimes = parse_delay("./{0}/alccVerus/{1}{2}/".format(algo,trace,1)+"Receiver.out")
+			for i in range(1,int(sys.argv[3])+1):
+				print algo + str(i)
+
+				if 'verus' not in algo:
+					os.system("tshark -r ./alccVerus/{1}{0}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./alccVerus/{1}{0}{2}/throughput.csv 2> /dev/null".format(algo,trace,i))
+					throughputDL, timeDL = parse_throughput("./alccVerus/{1}{0}{2}/throughput.csv".format(algo,trace,i))
+					delays, delayTimes = parse_delay("./alccVerus/{1}{0}{2}/".format(algo,trace,1)+"Receiver.out")
 					totalDelay[algo] += delays
 					totalThroughput[algo] += throughputDL
 				else:
@@ -208,8 +208,8 @@ for trace in [sys.argv[1]]:
 	for name in labels:
 		overallThroughput.append(simple_cdf(totalThroughput[name]))
 		overallDelay.append(simple_cdf(totalDelay[name]))
-	print("---------",overallThroughput,"-----------")	
-	print("---------",overallDelay,"------------")
+	# print("---------",overallThroughput,"-----------")	
+	# print("---------",overallDelay,"------------")
 	for i in range(len(labels)):
 
 		x = (overallDelay[i][2]+overallDelay[i][0])/2.0
@@ -218,8 +218,8 @@ for trace in [sys.argv[1]]:
 			height=(overallThroughput[i][2]-overallThroughput[i][0]), edgecolor=colors[labels[i]], fc='None', lw=3,
 			alpha=.9, label=labels[i])
 
-		print labels[i], overallThroughput[i][2], overallThroughput[i][0]
-		print labels[i], overallDelay[i][2], overallDelay[i][0]
+		#print labels[i], overallThroughput[i][2], overallThroughput[i][0]
+		#print labels[i], overallDelay[i][2], overallDelay[i][0]
 
 		ax.add_patch(ellipse)
 		plt.plot(overallDelay[i][1],overallThroughput[i][1],marker='x',mew=3,color=colors[labels[i]])

@@ -29,6 +29,8 @@ def simpleRun():
 	 	RunAlccVerus()
 	elif args.algo == 'verus':
 	 	RunVERUS()
+	elif args.algo == 'verusLoss':
+		RunVERUSLoss()
 	elif args.algo == 'copa':
 	 	RunCopa()
 	elif args.algo == 'alccVerusCubic':
@@ -60,6 +62,7 @@ def RunCopa():
 	os.system("ps | pgrep -f /genericCC/sender | xargs kill -9")
 	os.system("ps | pgrep -f /genericCC/receiver | xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
+	os.system("sudo chown {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
 	os.system("mv info.out "+args.dir+str(args.name)+"/")
 
 def RunAlccCopa():
@@ -144,6 +147,29 @@ def RunVERUS():
 	#os.system("sudo kill -9 `sudo lsof -t -i:60001`")
 	os.system("mv client_60001* "+args.dir + "/verus/"+str(args.name)+"/")
 
+def RunVERUSLoss():
+	if not os.path.exists(args.dir + '/verus'):
+		os.makedirs(args.dir+ "/verus")
+	if not os.path.exists(args.dir + '/verus/'+str(args.name)):
+		os.makedirs(args.dir+ "/verus/"+str(args.name))
+	
+	print("Begin " + str(args.time) + " seconds of verus transmission")
+	command = "./../Applications/verus/src/verus_server -name "+args.dir + "/verus/"+str(args.name)+" -p 60001 -t "+ str(args.time)#+" > rubbishVerus"
+	print command
+	pro = Popen(command, stdout=PIPE, shell=True, preexec_fn=os.setsid)
+	
+	command = "mm-delay 10 mm-link mm-loss uplink 0.01 --meter-downlink ../Eval/channelTraces/" + str(args.trace) + " ../Eval/channelTraces/"  + str(args.trace)
+	print command
+
+	p = Popen(command, stdin=PIPE,shell=True)
+	p.communicate("./../Applications/verus/src/verus_client $MAHIMAHI_BASE -p 60001\nexit\n")
+
+	os.system("ps | pgrep -f verus_server | xargs kill -9")
+	os.system("ps | pgrep -f verus_client | xargs kill -9")
+	#os.system("sudo kill -9 `sudo lsof -t -i:60001`")
+	os.system("mv client_60001* "+args.dir + "/verus/"+str(args.name)+"/")
+
+
 def RunAlccVerusCubic():
 	output = "Not"
 	while output != "":
@@ -169,9 +195,8 @@ def RunAlccVerusCubic():
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
 	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
-	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
-	os.system("sudo rm -r /tmp/2021-*")
-	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
+	os.system("sudo mv ~/Desktop/2021-*/* "+args.dir+str(args.name)+"/")
+	os.system("sudo chown -R {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
 	os.system("sudo rm sampleVideo.mp4*")
 	
 def RunAlccVerusCubicNL():
@@ -199,9 +224,8 @@ def RunAlccVerusCubicNL():
 	os.system("ps | pgrep -f wget | sudo xargs kill -9")
 	os.system("ps | pgrep -f tcpdump | sudo xargs kill -9")
 	os.system("sudo kill -9 `sudo lsof -t -i:60001`")
-	os.system("sudo mv /tmp/2021-*/* "+args.dir+str(args.name)+"/")
-	os.system("sudo rm -r /tmp/2021-*")
-	os.system("sudo chown muhammad:muhammad "+args.dir+str(args.name)+"/*")
+	os.system("sudo mv ~/Desktop/2021-*/*  "+args.dir+str(args.name)+"/")
+	os.system("sudo chown -R {0}:{0} ".format(USER_NAME)+args.dir+str(args.name)+"/*")
 	os.system("sudo rm sampleVideo.mp4*")
 
 if __name__ == '__main__':

@@ -1,15 +1,15 @@
 import os
 
-TIME=60
+TIME=300
 DIR='Results'
-NUM_RUNS=5
+NUM_RUNS=20
 
 os.system('sudo sysctl -w net.ipv4.tcp_congestion_control=cubic')
 
 # compile bftpd with alcc verus library
 os.system('echo "compiling bftpd for alcc verus" && cd ../Applications/bftpd && cp Makefile_verus Makefile && make')
 
-for trace in ['highwayGold']:  # CityDrive Corniche rapidGold; do
+for trace in ['highwayGold', 'CityDrive', 'Corniche', 'rapidGold']:
 	for i in range(1,NUM_RUNS+1):
 		print (trace)
 

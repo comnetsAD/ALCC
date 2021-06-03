@@ -206,7 +206,7 @@ for trace in [sys.argv[1]]:
 
 			plt.savefig('./figures/{0}_{1}{2}.png'.format(algo,trace,i),bbox_inches='tight')
 		except:
-			print ("Error in", algo, trace, i)
+			print ("Error in", trace, i)
 			continue
 
 

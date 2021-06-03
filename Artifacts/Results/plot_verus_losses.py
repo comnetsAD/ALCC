@@ -169,22 +169,21 @@ for trace in [sys.argv[1]]:
 	if True:
 		
 		for algo in labels:
-
 			if "alccVerusCubic" == algo:
-				os.system("tshark -r ./Verusloss/{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./Verusloss/{0}/{1}{2}/throughput.csv".format(algo,trace,1))
-				throughputDL1, timeDL1 = parse_throughput("./Verusloss/{0}/{1}{2}/throughput.csv".format(algo,trace,1))
-				delays1, delayTimes1 = parse_delay("./Verusloss/{0}/{1}{2}/".format(algo,trace,1)+"Receiver.out")
+				os.system("tshark -r ./Verusloss/{0}/{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./Verusloss/{0}/{1}/throughput.csv 2> /dev/null".format(algo,trace))
+				throughputDL1, timeDL1 = parse_throughput("./Verusloss/{0}/{1}/throughput.csv".format(algo,trace))
+				delays1, delayTimes1 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver.out")
 			elif "alccVerusCubicNL" == algo:
 				print (algo)
-				os.system("tshark -r ./Verusloss/{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./Verusloss/{0}/{1}{2}/throughput.csv".format(algo,trace,1))
-				throughputDL2, timeDL2 = parse_throughput("./Verusloss/{0}/{1}{2}/throughput.csv".format(algo,trace,1))
+				os.system("tshark -r ./Verusloss/{0}/{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./Verusloss/{0}/{1}/throughput.csv 2> /dev/null".format(algo,trace))
+				throughputDL2, timeDL2 = parse_throughput("./Verusloss/{0}/{1}/throughput.csv".format(algo,trace))
 
 				print(timeDL2)
 				print(throughputDL2[:100])
-				delays2, delayTimes2 = parse_delay("./Verusloss/{0}/{1}{2}/".format(algo,trace,1)+"Receiver.out")
+				delays2, delayTimes2 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver.out")
 			else:
-				throughputDL3, timeDL3 = parse_throughput("./Verusloss/{0}/{1}{2}/client_60001.out".format(algo,trace,1))
-				delays3, delayTimes3 = parse_delay("./Verusloss/{0}/{1}{2}/".format(algo,trace,1)+"Receiver.out")
+				throughputDL3, timeDL3 = parse_throughput("./Verusloss/{0}/{1}/client_60001.out".format(algo,trace))
+				delays3, delayTimes3 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver.out")
 
 
 	sns.set_style("white")
