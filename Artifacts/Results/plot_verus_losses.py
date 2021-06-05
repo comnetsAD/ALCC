@@ -224,5 +224,5 @@ for trace in [sys.argv[1]]:
 	plt.subplots_adjust(top=0.85)
 	if not os.path.exists('figures'):
 		os.makedirs('figures')
-	fig.savefig('./figures/verusloss-Fig13.pdf',bbox_inches='tight')
+	fig.savefig('./figures/verusloss-{0}.png'.format(sys.argv[1]),bbox_inches='tight')
 	plt.close(fig)

@@ -172,33 +172,33 @@ fig, (ax1, ax2) = plt.subplots(2, figsize=(8,6), facecolor="w")
 fig.tight_layout(pad=2.0)
 
 for trace in [sys.argv[1]]:
-	labels = ["alccCopacubic","alccCopabic","alccCopareno","copa"]
+	labels = ["cubic","bic","reno","copa"]
 
-	totalThroughput = {"alccCopacubic":[],"alccCopabic":[],"alccCopareno":[],"copa":[]}
-	totalDelay = {"alccCopacubic":[],"alccCopabic":[],"alccCopareno":[],"copa":[]}
+	totalThroughput = {"cubic":[],"bic":[],"reno":[],"copa":[]}
+	totalDelay = {"cubic":[],"bic":[],"reno":[],"copa":[]}
 
 
-	colors = {'copa':'b', 'alccCopacubic':'r', 'alccCopareno':'g', 'alccCopabic':'m'}
+	colors = {'copa':'b', 'cubic':'r', 'reno':'g', 'bic':'m'}
 	tsharkF = {"copa":"src", "alccCopa":"dst"}
 	for algo in labels:
 		print algo
 
-		if "copa" == algo:
-			os.system("tshark -r ./{0}/alccCopa/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./{0}/alccCopa/{1}{2}/throughput.csv".format(algo,trace,1,"src"))
-		else:
-			os.system("tshark -r ./{0}/alccCopa/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./{0}/alccCopa/{1}{2}/throughput.csv".format(algo,trace,1,"dst"))
-
 		throughputDL = []
 		timeDL = []
-		for i in range(1,2):
+		for i in range(1,int(sys.argv[3])+1):
+			if "copa" == algo:
+				os.system("tshark -r ./copa/{0}{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{2}==100.64.0.4' > ./copa/{0}{1}/throughput.csv".format(trace,i,"src"))
+			else:
+				os.system("tshark -r ./alccCopa/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./alccCopa/{1}{0}{2}/throughput.csv".format(algo,trace,i,"dst"))
+
 			if algo == 'copa':
-				delays, delayTimes = parse_delay_copa("./{0}/{1}{2}/info.out".format(algo,trace,1))
-				throughputDL, timeDL = parse_throughput("./{0}/{1}{2}/throughput.csv".format(algo,trace,1))
+				delays, delayTimes = parse_delay_copa("./copa/{0}{1}/info.out".format(trace,i))
+				throughputDL, timeDL = parse_throughput("./copa/{0}{1}/throughput.csv".format(trace,i))
 				totalThroughput[algo] += throughputDL
 				totalDelay[algo] += delays
 			else:
-				delays, delayTimes = parse_delay(glob("./{0}/alccCopa/{1}{2}/*/".format(algo,trace,1))[0]+"Receiver.out")
-				throughputDL, timeDL = parse_throughput("./{0}/alccCopa/{1}{2}/throughput.csv".format(algo,trace,1))
+				delays, delayTimes = parse_delay(glob("./alccCopa/{1}{0}{2}/*/".format(algo,trace,1))[0]+"Receiver.out")
+				throughputDL, timeDL = parse_throughput("./alccCopa/{1}{0}{2}/throughput.csv".format(algo,trace,1))
 				totalThroughput[algo] += throughputDL
 				totalDelay[algo] += delays
 

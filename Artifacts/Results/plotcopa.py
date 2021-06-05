@@ -22,6 +22,9 @@ plt.rcParams['xtick.labelsize'] = 20
 plt.rcParams["font.weight"] = "bold"
 plt.rcParams["axes.labelweight"] = "bold"
 
+if not os.path.exists('figures'):
+	os.makedirs('figures')	
+
 def simplify_cdf(data):
 	'''Return the cdf and data to plot
 		Remove unnecessary points in the CDF in case of repeated data
@@ -326,6 +329,5 @@ for trace in [sys.argv[1]]:
 		plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
 	except:
 		pass
-	if not os.path.exists('figures'):
-		os.makedirs('figures')	
+
 	plt.savefig("./figures/copa_overall_"+trace+'.png',bbox_inches='tight')
