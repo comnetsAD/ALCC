@@ -155,6 +155,15 @@ int dataconn()
 	} else {
 		sock1 = socket(AF_INET, SOCK_STREAM, 0);
         prepare_sock(sock1);
+
+    int reuse = 1;
+    if (setsockopt(sock1, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0) 
+        perror("setsockopt(SO_REUSEPORT) failed");
+
+    if (setsockopt(sock1, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
+        perror("setsockopt(SO_REUSEADDR) failed");
+
+
 		local.sin_addr.s_addr = name.sin_addr.s_addr;
 		local.sin_family = AF_INET;
         if (!strcasecmp(config_getoption("DATAPORT20"), "yes")) {
@@ -339,6 +348,14 @@ void command_pasv(char *foo)
         return;
     }
 	pasvsock = socket(AF_INET, SOCK_STREAM, 0);
+
+  int reuse = 1;
+  if (setsockopt(pasvsock, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0) 
+    perror("setsockopt(SO_REUSEPORT) failed");
+
+  if (setsockopt(pasvsock, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
+        perror("setsockopt(SO_REUSEADDR) failed");
+
 	sa.sin_addr.s_addr = INADDR_ANY;
 	sa.sin_family = AF_INET;
 
@@ -421,6 +438,14 @@ void command_epsv(char *params)
         }
     }
     pasvsock = socket(AF_INET, SOCK_STREAM, 0);
+
+    int reuse = 1;
+    if (setsockopt(pasvsock, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(reuse)) < 0) 
+        perror("setsockopt(SO_REUSEPORT) failed");
+
+    if (setsockopt(pasvsock, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse)) < 0)
+        perror("setsockopt(SO_REUSEADDR) failed");
+      
     sa.sin_addr.s_addr = INADDR_ANY;
     sa.sin_port = 0;
     sa.sin_family = AF_INET;
