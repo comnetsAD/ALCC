@@ -1,0 +1,15 @@
+﻿These channel traces are taken from published papers and recorded from real cellular networks. cellularGold : taken from [1] and represents a recorded channel over Verizon's 4G network in the US. rapidGold:  inspired by [2], this trace represents a highly fluctuating channel, where the magnitude is varied randomly every 5 seconds.highwayGold:  taken from [3] and represents a recorded channel over the Etisalat 3G network while driving on a highway at 120~km/h.
+
+
+Other channel traces are collected by setting up a server located at a University campus and four Android smartphones. A bi-directional setup was used to monitor the downlink and uplink channels using a 3G HSPA+ cellular network. Both the server and client concurrently send UDP packets of 1400 bytes. Data rates of 2.5 Mbps and 5 Mbps were set for uplink and downlink, respectively. However, these data rates do not necessarily indicate the maximum capacity of the cellular network. We assume that the channel is not over-saturated by using these data rates, and packet-buffering is minimized under perfect channel conditions. Measurements of three different scenarios are captured with varying properties of mobility. The scenarios are CityDrive, CampusWalk, and Corniche. The channel traces are generated from the packet arrival timestamps at the receiver and the inter-arrival times between consecutive packet arrivals. Additionally, the channel traces from all our four phones were combined into one large trace to emulate significant user contention.
+
+Each line in the traceis a packet-delivery opportunity: the time at which an MTU-size packet (1500 Bytes) will be delivered in the emulation.
+
+
+[1] Keith Winstein, Anirudh Sivaraman, Hari Balakrishnan,et al. Stochastic forecasts achieve high throughput andlow delay over cellular networks. InProceedings ofthe 10th USENIX Conference on Networked SystemsDesign and Implementation (NSDI 13), pages 459–471,Lombard, IL, 2013. USENIX Association
+
+[2] M. Dong, Q. Li, D. Zarchy, P. B.Godfrey, andM. Schapira. PCC: Re-architecting Congestion Control for Consistent High Performance. InProceedings of the12th USENIX Conference on Networked Systems Design and Implementation (NSDI 15), pages 395–408, USA,2015. USENIX Association
+
+[3] Yasir Zaki, Thomas Pötsch, Jay Chen, Lakshmi-narayanan Subramanian, and Carmelita Görg. Adaptivecongestion control for unpredictable cellular networks.InProceedings of the ACM SIGCOMM 2015 Confer-ence, pages 509 – 522, London, UK, 2015. Associationfor Computing Machinery
+
+

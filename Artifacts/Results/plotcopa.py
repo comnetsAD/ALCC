@@ -157,7 +157,7 @@ for trace in [sys.argv[1]]:
 			ax = plt.gca()
 
 			# plotting the trace file
-			f1 = open ("../../Eval/channelTraces/{}".format(trace),"r")
+			f1 = open ("../../channelTraces/{}".format(trace),"r")
 			BW = []
 			nextTime = 2900
 			cnt = 0
@@ -326,5 +326,6 @@ for trace in [sys.argv[1]]:
 		plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
 	except:
 		pass
-
+	if not os.path.exists('figures'):
+		os.makedirs('figures')	
 	plt.savefig("./figures/copa_overall_"+trace+'.png',bbox_inches='tight')

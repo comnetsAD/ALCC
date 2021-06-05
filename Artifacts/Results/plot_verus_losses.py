@@ -198,7 +198,7 @@ for trace in [sys.argv[1]]:
 	ax2.set_yscale('log',basey=10)
 	ax2.grid(True, which="both")
 
-	f1=f1 = open ("../../Eval/channelTraces/cellularGold","r")
+	f1=f1 = open ("../../channelTraces/"+sys.argv[1],"r")
 	BW = []
 	nextTime = 2900
 	cnt = 0
@@ -222,6 +222,7 @@ for trace in [sys.argv[1]]:
 
 	fig.legend((p1,p2,p3),(p1.get_label(),p2.get_label(),p3.get_label()),ncol=3,loc="upper center")
 	plt.subplots_adjust(top=0.85)
-
-	fig.savefig('./figures/verusloss.pdf',bbox_inches='tight')
+	if not os.path.exists('figures'):
+		os.makedirs('figures')
+	fig.savefig('./figures/verusloss-Fig13.pdf',bbox_inches='tight')
 	plt.close(fig)

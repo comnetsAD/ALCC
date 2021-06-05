@@ -147,7 +147,7 @@ def simple_cdf(data):
 	return tmp
 
 
-for trace in [sys.argv[1]]:
+for trace in [sys.argv[1]]: #sys.arv[1] is the trace name i.e., CampusWalk or highwayGold for Fig.11 a,b,c d. 
 	labels = ["cubic","bic","reno","verus"]
 
 	sns.set_style("white")
@@ -211,13 +211,18 @@ for trace in [sys.argv[1]]:
 	# print("---------",overallThroughput,"-----------")	
 	# print("---------",overallDelay,"------------")
 	for i in range(len(labels)):
-
-		x = (overallDelay[i][2]+overallDelay[i][0])/2.0
-		y = (overallThroughput[i][2]+overallThroughput[i][0])/2.0
-		ellipse = Ellipse(xy=(x,y), width=(overallDelay[i][2]-overallDelay[i][0]), 
-			height=(overallThroughput[i][2]-overallThroughput[i][0]), edgecolor=colors[labels[i]], fc='None', lw=3,
-			alpha=.9, label=labels[i])
-
+		if labels[i] != 'verus':
+			x = (overallDelay[i][2]+overallDelay[i][0])/2.0
+			y = (overallThroughput[i][2]+overallThroughput[i][0])/2.0
+			ellipse = Ellipse(xy=(x,y), width=(overallDelay[i][2]-overallDelay[i][0]), 
+				height=(overallThroughput[i][2]-overallThroughput[i][0]), edgecolor=colors[labels[i]], fc='None', lw=3,
+				alpha=.9, label='alcc'+labels[i])
+		else:
+			x = (overallDelay[i][2]+overallDelay[i][0])/2.0
+			y = (overallThroughput[i][2]+overallThroughput[i][0])/2.0
+			ellipse = Ellipse(xy=(x,y), width=(overallDelay[i][2]-overallDelay[i][0]), 
+				height=(overallThroughput[i][2]-overallThroughput[i][0]), edgecolor=colors[labels[i]], fc='None', lw=3,
+				alpha=.9, label='verus')	
 		#print labels[i], overallThroughput[i][2], overallThroughput[i][0]
 		#print labels[i], overallDelay[i][2], overallDelay[i][0]
 
@@ -235,6 +240,7 @@ try:
 	plt.ylim([0, 1.2*max(overallThroughput[0][2],overallThroughput[1][2])])
 except:
 	pass
-
+if not os.path.exists('figures'):
+		os.makedirs('figures')
 plt.savefig("./figures/verus_overall_TCP_"+trace+'.png',bbox_inches='tight')
 plt.close()
