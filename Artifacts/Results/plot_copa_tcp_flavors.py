@@ -185,11 +185,11 @@ for trace in [sys.argv[1]]:
 
 		throughputDL = []
 		timeDL = []
-		for i in range(1,int(sys.argv[3])+1):
+		for i in range(1,int(sys.argv[2])+1):
 			if "copa" == algo:
-				os.system("tshark -r ./copa/{0}{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{2}==100.64.0.4' > ./copa/{0}{1}/throughput.csv".format(trace,i,"src"))
+				os.system("tshark -r ./copa/{0}{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{2}==100.64.0.4' > ./copa/{0}{1}/throughput.csv 2> /dev/null".format(trace,i,"src"))
 			else:
-				os.system("tshark -r ./alccCopa/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./alccCopa/{1}{0}{2}/throughput.csv".format(algo,trace,i,"dst"))
+				os.system("tshark -r ./alccCopa/{1}{0}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'ip.{3}==100.64.0.4' > ./alccCopa/{1}{0}{2}/throughput.csv 2> /dev/null".format(algo,trace,i,"dst"))
 
 			if algo == 'copa':
 				delays, delayTimes = parse_delay_copa("./copa/{0}{1}/info.out".format(trace,i))

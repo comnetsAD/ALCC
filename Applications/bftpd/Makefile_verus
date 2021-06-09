@@ -11,23 +11,21 @@ sbindir=${exec_prefix}/sbin
 DESTDIR=
 DIRPAX=
 PAX=
-SDIR = ../../libalcc/verus/lib/alglib/src
-
+SRCDIR = ../../libalcc/verus/lib/alglib/src
 
 HEADERS=bftpdutmp.h commands.h commands_admin.h cwd.h dirlist.h list.h login.h logging.h main.h mystring.h options.h targzip.h mypaths.h md5.h md5_loc.h ../../libalcc/verus/libalcc_verus.h ../../libalcc/verus/verus.hpp
-OBJS=bftpdutmp.o commands.o commands_admin.o cwd.o dirlist.o list.o login.o logging.o main.o mystring.o options.o md5.o ../../libalcc/verus/libalcc_verus.o ../../libalcc/verus/lib/alglib/src/*.o
+OBJS= $(patsubst $(SRCDIR)/%.cpp, $(SRCDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
+OBJS2= bftpdutmp.o commands.o commands_admin.o cwd.o dirlist.o list.o login.o logging.o main.o mystring.o options.o md5.o ../../libalcc/verus/libalcc_verus.o
 SRCS=bftpdutmp.c commands.c commands_admin.c cwd.c dirlist.c list.c login.c logging.c main.c mystring.c options.c md5.c ../../libalcc/verus/libalcc_verus.cpp
 
-OBJS2LINK=$(OBJS) $(PAX)
+
+OBJS2LINK=$(OBJS) $(OBJS2) $(PAX)
 LDFLAGS=
 
-# objects := $(patsubst %.c,%.o,$(wildcard ../../libalcc/verus/lib/alglib/src/*.cpp))
-# _OBJS = alglibinternal.o alglibmisc.o ap.o dataanalysis.o diffequations.o fasttransforms.o integration.o interpolation.o linalg.o optimization.o solvers.o specialfunctions.o statistics.o
-# OBJS_ALGLIB = $(patsubst %,../../libalcc/verus/lib/alglib/src/%,$(_OBJS))
 
 all: bftpd
 
-bftpd: $(OBJS)
+bftpd: $(OBJS2) $(OBJS)	
 	./mksources $(DIRPAX)
 	$(CC) $(OBJS2LINK) $(LDFLAGS) $(LIBS) -o bftpd
 
@@ -48,6 +46,7 @@ install: all
 	chmod 755 $(DESTDIR)/$(prefix)/var/run/bftpd
 
 clean distclean:
+	rm $(OBJS2) $(OBJS)
 	rm -f *~ $(OBJS) bftpd mksources.finished config.cache
 	[ "$(DIRPAX)" = "" ] || make -C $(DIRPAX) clean
 
