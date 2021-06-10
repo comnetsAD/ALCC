@@ -1,0 +1,11 @@
+MAC OSX
+----------
+You need to install the following libraries:
+
+$ brew install boost homebrew/science/alglib
+
+Linux
+------
+You need to install the following libraries:
+
+$ sudo apt-get install libtbb-dev libalglib-dev libalglib3.8 libboost-system1.55-dev

@@ -1,0 +1,11 @@
+*.o
+*.mk
+*.mod
+*.log
+*.cmd
+*.mod
+*.Po
+*.log
+*.status
+*.in
+*.ko
