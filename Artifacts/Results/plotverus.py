@@ -165,6 +165,43 @@ def parse_delay(filename):
 
 	delay_file.close()
 
+
+	lastTime = times[-1]
+
+	if "0" in filename:
+		print "---------------------"
+		cnt = 1
+		file = filename.split("0")
+		file = file[0]+str(cnt)+file[1]
+		print file
+
+		while os.path.isfile(file):
+
+			print file
+
+			delay_file = open(file,"r")
+			tokens = delay_file.readline().strip().split(",")
+			sTime = float(tokens[0])
+
+			for line in delay_file:
+				tokens = line.strip().split(",")
+
+				if '/verus/' in filename:
+					pass
+				elif 'KERNEL' in line or len(tokens) != 6 or float(tokens[2]) < 20:
+					continue
+
+				if (float(tokens[0])-sTime) < float(sys.argv[3]):
+					delays.append((float(tokens[2])))
+					times.append((float(tokens[0])-sTime)+lastTime)
+
+
+			cnt+=1
+			file = filename.split("0")
+			file = file[0]+str(cnt)+file[1]
+			lastTime = times[-1]
+
+
 	return  delays, times
 
 
@@ -209,9 +246,12 @@ for trace in [sys.argv[1]]:
 
 				if algo=="alccVerus":
 					os.system("tshark -r ./{0}/{1}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./{0}/{1}{2}/throughput.csv".format(algo,trace,i))
-				
-				print "./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out"
-				delays, delayTimes = parse_delay("./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out")
+					
+					print "./{0}/{1}{2}/".format(algo,trace,i)+"Receiver0.out"
+					delays, delayTimes = parse_delay("./{0}/{1}{2}/".format(algo,trace,i)+"Receiver0.out")
+				else:
+					print "./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out"
+					delays, delayTimes = parse_delay("./{0}/{1}{2}/".format(algo,trace,i)+"Receiver.out")
 
 				#print delays
 				ax2.plot(delayTimes, delays, color=colors[algo], lw=3, rasterized=True, label=algo)

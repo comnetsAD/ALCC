@@ -235,6 +235,14 @@ int Circular_Queue::length (ofstream &log)
         return len;
     }
 
+bool file_exists(const char * filename) {
+    if (FILE * file = fopen(filename, "r")) {
+        fclose(file);
+        return true;
+    }
+    return false;
+}
+
 ALCCSocket::ALCCSocket (long queue_length, int new_sockfd, int port)
 {
     this->maxWCurve = 0;
@@ -283,11 +291,21 @@ ALCCSocket::ALCCSocket (long queue_length, int new_sockfd, int port)
     }
 	cout << timeString << endl;
 
-   sprintf (command, "2021-alcc-verus/Verus.out", timeString);
+
+   int file_cnt = 0;
+   sprintf (command, "2021-alcc-verus/Receiver%d.out", file_cnt);
+   while (file_exists(command))
+   {
+    file_cnt ++;
+    sprintf (command, "2021-alcc-verus/Receiver%d.out", file_cnt);
+   }
+
+
+   sprintf (command, "2021-alcc-verus/Verus%d.out", file_cnt);
    verusLog.open(command);
-   sprintf (command, "2021-alcc-verus/Losses.out", timeString);
+   sprintf (command, "2021-alcc-verus/Losses%d.out", file_cnt);
    lossLog.open(command,ios::out);
-   sprintf (command, "2021-alcc-verus/Receiver.out", timeString);
+   sprintf (command, "2021-alcc-verus/Receiver%d.out", file_cnt);
    receiverLog.open(command,ios::out);
 
     gettimeofday(&startTime,NULL);
