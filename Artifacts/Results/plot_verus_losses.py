@@ -117,6 +117,43 @@ def parse_delay(filename):
 
 	delay_file.close()
 
+	lastTime = times[-1]
+
+	if "0" in filename:
+		print "---------------------"
+		cnt = 1
+		file = filename.split("0")
+		file = file[0]+str(cnt)+file[1]
+		print file
+
+		while os.path.isfile(file):
+
+			print file
+
+			delay_file = open(file,"r")
+			tokens = delay_file.readline().strip().split(",")
+			sTime = float(tokens[0])
+
+			for line in delay_file:
+				tokens = line.strip().split(",")
+
+				if '/verus/' in filename:
+					pass
+				elif 'KERNEL' in line or len(tokens) != 6 or float(tokens[2]) < 20:
+					continue
+
+				if (float(tokens[0])-sTime) < float(sys.argv[2]):
+					delays.append((float(tokens[2])))
+					times.append((float(tokens[0])-sTime)+lastTime)
+
+
+			cnt+=1
+			file = filename.split("0")
+			file = file[0]+str(cnt)+file[1]
+			lastTime = times[-1]
+
+			delay_file.close()
+
 	return  delays, times
 
 def simple_cdf(data):
@@ -172,7 +209,7 @@ for trace in [sys.argv[1]]:
 			if "alccVerusCubic" == algo:
 				os.system("tshark -r ./Verusloss/{0}/{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./Verusloss/{0}/{1}/throughput.csv 2> /dev/null".format(algo,trace))
 				throughputDL1, timeDL1 = parse_throughput("./Verusloss/{0}/{1}/throughput.csv".format(algo,trace))
-				delays1, delayTimes1 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver.out")
+				delays1, delayTimes1 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver0.out")
 			elif "alccVerusCubicNL" == algo:
 				print (algo)
 				os.system("tshark -r ./Verusloss/{0}/{1}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./Verusloss/{0}/{1}/throughput.csv 2> /dev/null".format(algo,trace))
@@ -180,7 +217,7 @@ for trace in [sys.argv[1]]:
 
 				print(timeDL2)
 				print(throughputDL2[:100])
-				delays2, delayTimes2 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver.out")
+				delays2, delayTimes2 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver0.out")
 			else:
 				throughputDL3, timeDL3 = parse_throughput("./Verusloss/{0}/{1}/client_60001.out".format(algo,trace))
 				delays3, delayTimes3 = parse_delay("./Verusloss/{0}/{1}/".format(algo,trace)+"Receiver.out")

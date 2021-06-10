@@ -89,6 +89,39 @@ def parse_delay_alccVerus(filename):
 
 	delay_file.close()
 
+	lastTime = times[-1]
+
+	if "0" in filename:
+		print "---------------------"
+		cnt = 1
+		file = filename.split("0")
+		file = file[0]+str(cnt)+file[1]
+		print file
+
+		while os.path.isfile(file):
+			print file
+
+			delay_file = open(file,"r")
+			delay_file = open(filename,"r")
+			tokens = delay_file.readline().strip().split()
+			sTime = float(tokens[0])
+			delays.append((float(tokens[1])*1000.0))
+			times.append((float(tokens[0])))
+
+			for line in delay_file:
+				tokens = line.strip().split()
+
+				delays.append((float(tokens[1])*1000))
+				times.append((float(tokens[0])-sTime)+lastTime)
+
+
+			cnt+=1
+			file = filename.split("0")
+			file = file[0]+str(cnt)+file[1]
+			lastTime = times[-1]
+
+			delay_file.close()
+
 	return  delays, times
 
 def parse_delay(filename):
@@ -173,7 +206,7 @@ for trace in [sys.argv[1]]: #sys.arv[1] is the trace name i.e., CampusWalk or hi
 				if 'verus' not in algo:
 					os.system("tshark -r ./alccVerus/{1}{0}{2}/log.pcap -T fields -e frame.time_epoch -e frame.len 'tcp.srcport==60001' > ./alccVerus/{1}{0}{2}/throughput.csv 2> /dev/null".format(algo,trace,i))
 					throughputDL, timeDL = parse_throughput("./alccVerus/{1}{0}{2}/throughput.csv".format(algo,trace,i))
-					delays, delayTimes = parse_delay("./alccVerus/{1}{0}{2}/".format(algo,trace,1)+"Receiver.out")
+					delays, delayTimes = parse_delay("./alccVerus/{1}{0}{2}/".format(algo,trace,1)+"Receiver0.out")
 					totalDelay[algo] += delays
 					totalThroughput[algo] += throughputDL
 				else:
